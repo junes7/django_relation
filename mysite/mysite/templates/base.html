@@ -9,7 +9,28 @@
 </head>
 <body>
   <div class="container">
+    {% if user.is_authenticated %}     
+      <p>{{user.username}}님 환영합니다.</p>
+      <button class="btn btn-outline-success"><a href="{% url 'accounts:logout' %}">로그아웃</a></button>
+      {% comment %} <form action="{% url 'accounts:update' %}" method="POST">
+        {% csrf_token%}
+        <input type="submit" value="회원정보수정">
+      </form> {% endcomment %}
+      {% comment %} a 태그는 무조건 GET 방식이다. {% endcomment %}
+      <button class="btn btn-outline-success"><a href="{% url 'accounts:update' %}">회원정보수정</a></button>
+      <button class="btn btn-outline-success"><a href="{% url 'accounts:change_password' %}">비밀번호 수정</a></button>
+      <form action="{% url 'accounts:delete' %}" method="POST">
+        {% csrf_token%}
+        <input type="submit" value="회원탈퇴">
+      </form>
+    {% else %}
+      {% if request.resolver_match.url_name != 'signup' %}
+        <button class="btn btn-outline-success"><a href="{% url 'accounts:signup' %}">회원가입</a></button> 
+      {% endif %}
+      <button class="btn btn-outline-success"><a href="{% url 'accounts:login' %}">로그인</a></button>
+    {% endif %}
     {% block body %}
+
     {% endblock %}
   </div>
   {% bootstrap_javascript jquery='full' %}

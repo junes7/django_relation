@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 class Article(models.Model):
@@ -6,6 +7,7 @@ class Article(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey
 
     def __str__(self):
         return f'{self.pk}번째 글, {self.title}-{self.content}'
@@ -21,6 +23,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=200)
     # 생성 된 시간 저장 옵션
     created_at = models.DateTimeField(auto_now_add=True)
-
+    user = models.ForeignKey
+    
     def __str__(self):
         return f'Article:{self.article}, {self.pk}-{self.content}'

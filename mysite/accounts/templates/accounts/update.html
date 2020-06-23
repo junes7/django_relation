@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block body %}
+<h1>회원정보 수정</h1>
+<hr>
+<form action="" method="POST">
+  {% csrf_token %}
+  {% comment %} {{user_change_form.as_p}} {% endcomment %}
+  {% bootstrap_form user_change_form %}
+  {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      회원정보 수정 완료
+    </button>
+  {% endbuttons %}
+</form>
+<hr>
+{% endblock %}
