@@ -2,9 +2,13 @@
 {% block body %}
 <h1>상세 페이지</h1>
 <hr>
+<h3>작성자 | {{ article.user.username }}</h3>
 <p>{{ article.pk }}번째 글</p>
 <h2>{{ article.title }}</h2>
 <h3>{{ article.content }}</h3>
+{% if article.image %}
+  <img src="{{ article.image_thumbnail.url }}" alt="">
+{% endif %}
 <hr>
 <p>{{ comments|length }}개의 댓글</p>
 <!-- <p>{{ article.comment_set.all|length }}</p> -->
@@ -13,16 +17,20 @@
   <tr>
     <th>댓글</th>
     <th>삭제유무</th>
+    <th>작성자</th>
   </tr>
   {% for comment in comments %} 
   <tr>
     <td>{{ comment.content }} &emsp;</td>
     <td>
+    {% if request.user == comment.user %}
       <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
         {% csrf_token%}
         <input type="submit" value="댓글삭제">
       </form>
+    {% endif %}
     </td>
+    <td>{{comment.user.username}}</td>
     {% empty %}
     <td><p>댓글이 없습니다.</p></td>
   </tr>
@@ -31,20 +39,26 @@
 <hr>
 
 <h3>댓글 작성</h3>
-<form action="{% url 'articles:comment_create' article.pk %}" method="POST">
-  {% csrf_token %}
-  <!-- 댓글 : <input type="text" name="content"> -->
-    댓글 : {{ comment_form }}
-  <input type="submit" value="댓글생성">
-</form>
+{% if user.is_authenticated %}
+  <form action="{% url 'articles:comment_create' article.pk %}" method="POST">
+    {% csrf_token %}
+    <!-- 댓글 : <input type="text" name="content"> -->
+      댓글 : {{ comment_form }}
+    <input type="submit" value="댓글생성">
+  </form>
+{% else %}
+  <a href="{% url 'accounts:login' %}">[댓글을 작성하시려면 로그인을 해 주세요.]</a>
+{% endif %} 
 <hr>
-
-<a href="{% url 'articles:update' article.pk %}">[UPDATE]</a>
+{% if article.user == request.user %}
+<a href="{% url 'articles:update' article.pk %}">글 수정</a>
 <a href="{% url 'articles:index' %}">[back]</a>
 <form action="{% url 'articles:delete' article.pk %}" method="POST">
   {% csrf_token %}
   <input type="submit" value="DELETE" class="btn btn-primary">
 </form>
-
+{% else %}
+  <a href="{% url 'articles:index' %}">[back]</a>
+{% endif %}
 
 {% endblock %}
