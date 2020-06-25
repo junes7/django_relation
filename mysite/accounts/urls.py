@@ -9,4 +9,6 @@ urlpatterns = [
     path('delete/', views1.delete, name="delete"),
     path('update/', views1.update, name="update"),
     path('password/', views1.change_password, name="change_password"),
+    # 문자열만 받고 싶으면 가장 밑에 이 경로를 만들어야 한다.
+    path('<str:username>/', views1.profile, name="profile"),
 ]

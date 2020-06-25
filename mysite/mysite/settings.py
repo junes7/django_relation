@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'modelrelation',
     'articles',
     'accounts',
     'django_extensions',
@@ -128,3 +129,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# get_user_model 진짜 유저 객체를 가지고 온다. 만들어 넣은 유저 객체를 가지고 온다.
+# vs
+# AUTH_USER_MODEL은 사용자 문자열을 가지고 온다.
+AUTH_USER_MODEL = 'accounts.User'

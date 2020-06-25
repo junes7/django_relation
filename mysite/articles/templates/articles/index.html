@@ -1,14 +1,30 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block body %}
 <h1>메인 페이지 입니다.</h1>
 <hr>
-<a href="{% url 'articles:create' %}">[CREATE]</a>
-<hr>
-{% for article in articles %}
- <p>{{ article.pk }}번째 글</p>
- <p>{{ article.title }}</p>
- <p>댓글 개수 : {{ article.comment_set.all|length }}</p>
- <a href="{% url 'articles:detail' article.pk %}">[DETAIL]</a>
- <hr>
-{% endfor %}
+<div class="row justify-content-center">
+  {% for article in articles %}
+    <div class="card col-4 m-3" >
+      <!-- Card Image -->
+      {% if article.image %}
+        <img src="{{ article.image_thumbnail.url }}" class="card-img-top" alt="{{ article.image }}" style="height: 10rem;">
+      {% else %}
+        <img src="{% static 'articles/images/noimage.jpeg' %}" class="card-img-top" alt="이미지 없음">
+      {% endif %}
+      
+      <!-- Card Body -->
+      <div class="card-body">
+        <!-- Card Title -->
+        <a href="{% url 'articles:detail' article.pk %}"><h5 class="card-title btn-outline-light text-dark" style="text-align: center;">{{ article.title }}</h5></a>
+        <hr>
+        <!-- Article User -->
+        <p>작성자 : {{ article.user.username }}</p>
+
+        {% include 'articles/_like.html' %}
+        
+      </div>
+    </div>
+  {% endfor %}
+</div>
 {% endblock %}

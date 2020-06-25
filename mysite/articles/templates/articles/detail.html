@@ -7,22 +7,26 @@
 <h2>{{ article.title }}</h2>
 <h3>{{ article.content }}</h3>
 {% if article.image %}
-  <img src="{{ article.image_thumbnail.url }}" alt="">
+  <img src="{{ article.image_thumbnail.url }}" alt="{{ article.image }}">
 {% endif %}
-<hr>
+
+{% include 'articles/_like.html' %}
+
 <p>{{ comments|length }}개의 댓글</p>
 <!-- <p>{{ article.comment_set.all|length }}</p> -->
-<table style="border: 1; text-align: center;">
+<table border="1"; style="text-align: center;">
   <!-- <caption style="top: auto; text-align: center; ">댓글 게시판</caption> -->
   <tr>
+    <th>작성자</th>
     <th>댓글</th>
     <th>삭제유무</th>
-    <th>작성자</th>
   </tr>
   {% for comment in comments %} 
   <tr>
+    <td>{{comment.user.username}}</td>
     <td>{{ comment.content }} &emsp;</td>
     <td>
+    <!-- 2개 이상의 값을 넘겨주고자 할 때 순서 주의 -->
     {% if request.user == comment.user %}
       <form action="{% url 'articles:comment_delete' article.pk comment.pk %}" method="POST">
         {% csrf_token%}
@@ -30,7 +34,6 @@
       </form>
     {% endif %}
     </td>
-    <td>{{comment.user.username}}</td>
     {% empty %}
     <td><p>댓글이 없습니다.</p></td>
   </tr>
@@ -43,7 +46,7 @@
   <form action="{% url 'articles:comment_create' article.pk %}" method="POST">
     {% csrf_token %}
     <!-- 댓글 : <input type="text" name="content"> -->
-      댓글 : {{ comment_form }}
+    댓글 : {{ comment_form }}
     <input type="submit" value="댓글생성">
   </form>
 {% else %}

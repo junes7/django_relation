@@ -1,0 +1,27 @@
+<p class="card-text">
+  <span class="mr-3">
+    <i class="far fa-comment"></i> : {{ article.comment_set.all|length }}
+  </span>
+  <!-- Like -->
+  {% if user in article.like_users.all %}
+    <a href="{% url 'articles:like' article.pk %}">
+      <i class="fas fa-heart fa-lg text-danger"></i>
+    </a>
+  {% else %}
+    <a href="{% url 'articles:like' article.pk %}">
+      <i class="far fa-heart fa-lg text-danger"></i>
+    </a>
+  {% endif %}
+  <span class="mr-3"> : {{ article.like_users.count }}</span>
+  <!-- Recommend -->
+  {% if user in article.recommend_users.all %}
+    <a href="{% url 'articles:recommend' article.pk %}">
+        <i class="fas fa-thumbs-up"></i>
+    </a>
+  {% else%}
+    <a href="{% url 'articles:recommend' article.pk %}">
+        <i class="far fa-thumbs-up"></i>
+    </a>
+  {% endif %}
+  <span class="mr-3"> : {{ article.recommend_users.count }} </span>
+</p>
