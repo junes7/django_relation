@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 {% block body %}
 <h1>{{ person.username }}</h1>
+{% comment %} 팔로우 로직 구현 {% endcomment %}
+<!-- Follow -->
+{% if user != person %}
+  {% if user in person.followers.all %}
+    <a href="{% url 'accounts:follow' person.pk %}">
+      <i class="far fa-flag"></i>
+    </a>
+  {% else %}
+    <a href="{% url 'accounts:follow' person.pk %}">
+      <i class="fas fa-flag"></i>
+    </a>
+  {% endif %}
+{% endif %}
+  <span class="mr-3"> : {{ person.followers.count }}</span>
+
 {% comment %} 유저가 작성한 모든 게시물 {% endcomment %}
 <p>유저가 작성한 게시물들</p>
 <ul>
@@ -27,4 +42,5 @@
         <p>좋아요를 누른 적이 없습니다.</p>
     {% endfor %}
 </ul>
+
 {% endblock %}

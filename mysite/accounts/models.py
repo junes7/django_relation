@@ -14,3 +14,5 @@ class User(AbstractUser):
     # createsuperuser
     # shell_plus
     # create_user is_staff, 최고권한 True
+    # 버튼 경로 template view
+

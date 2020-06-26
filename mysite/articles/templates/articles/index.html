@@ -5,7 +5,7 @@
 <hr>
 <div class="row justify-content-center">
   {% for article in articles %}
-    <div class="card col-4 m-3" >
+    <div class="card col-4 m-2" >
       <!-- Card Image -->
       {% if article.image %}
         <img src="{{ article.image_thumbnail.url }}" class="card-img-top" alt="{{ article.image }}" style="height: 10rem;">
@@ -27,4 +27,8 @@
     </div>
   {% endfor %}
 </div>
+<hr>
+  {% for num in articles.paginator.page_range %}
+    <a href="{% url 'articles:index' %}?page={{num}}">{{ num }}</a>
+  {% endfor %}
 {% endblock %}

@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth import update_session_auth_hash
 from .forms import CustomUserChangeForm, CustomUserCreationForm
+from .models import User
 # Create your views here.
 
 def signup(request):
@@ -97,3 +98,16 @@ def profile(request, username):
         'person' : person
     }
     return render(request, 'accounts/profile.html', context)
+
+@login_required
+def follow(request, user_pk):
+    # person에 담긴 user_pk값을 가진 유저는
+    # 프로필의 주인이다.
+    # request.user는 나. 요청을 보내온 사용자이다.
+    person = get_object_or_404(get_user_model(), pk=user_pk)
+    user = request.user
+    if user in person.followers.all():
+        person.followers.remove(user)
+    else:
+        person.followers.add(user)
+    return redirect('accounts:profile', person.username )
